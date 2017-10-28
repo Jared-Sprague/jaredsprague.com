@@ -1,5 +1,6 @@
 ---
 title: Jared Sprague
+cover_image: images/JSpragueHeadshot_1k.jpg
 date: 2017-03-04 19:01:08
 tags: personal
 ---
