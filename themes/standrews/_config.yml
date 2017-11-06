@@ -11,7 +11,7 @@ favicon_url:
 default_cover_image: images/jaredsprague.jpg
 
 # Google Analytics Tracking ID
-google_analytics:
+google_analytics: UA-109256719-1
 
 # Social Accounts
 email_url: 
