@@ -30,14 +30,21 @@ class PlayState extends Phaser.State {
         this.userReactions = {
             bad: 'JING-YANG!',
             ok: 'Eh. They must be running Nucleus.',
-            good: 'Wow that was fast! Anton must be flying.',
-            great: 'That was FAST! They must be using Middle Out.'
+            good: 'Not bad. I wonder if Dinesh wrote this..',
+            great: 'That was FAST! They must be using Middle Out.',
+            perfect: "Fastest download EVER!",
+        };
+
+        this.flavorText = {
+            bad: 'Is your name Big Head?',
+            ok: 'I hear Hooli is hiring..',
+            good: 'Gavin Belson would buy it.',
+            great: "Peter Gregory would be proud.",
+            perfect: "Congratulations! You blew away the theoretical limit!",
         };
 
         this.overallScore = this.initScore();
 
-        // this.phraseStr = 'it is a long established fact that a reader';
-        this.phraseStr = 'abcdefghij';
         this.phraseSpeed = config.INITIAL_PHRASE_SPEED;
 
         this.createSounds();
@@ -89,8 +96,8 @@ class PlayState extends Phaser.State {
     }
 
     addKeyListener() {
-        let keyListener = this.typing.bind(this);
-        window.addEventListener('keydown', keyListener, false);
+        this.keyListener = this.typing.bind(this);
+        window.addEventListener('keydown', this.keyListener, false);
     }
 
     typing(e) {
@@ -208,6 +215,10 @@ class PlayState extends Phaser.State {
         }
     }
 
+    shutdown() {
+        window.removeEventListener('keydown', this.keyListener, false);
+    }
+
     beginPhrase(str) {
         this.phrase               = this.game.add.group();
         this.phrase.x             = 0;
@@ -318,20 +329,7 @@ class PlayState extends Phaser.State {
 
         // Draw the speech bubble and save a reference to it
         let stats = this.getStats();
-        let reaction = this.userReactions.ok;
-        if (stats.weissman_score <= 2.1) {
-            reaction = this.userReactions.bad;
-        }
-        else if (stats.weissman_score > 2.1 && stats.weissman_score <= 2.6) {
-            reaction = this.userReactions.ok;
-        }
-        else if (stats.weissman_score > 2.6 && stats.weissman_score <= 2.8) {
-            reaction = this.userReactions.good;
-        }
-        else if (stats.weissman_score > 2.8) {
-            reaction = this.userReactions.great;
-        }
-
+        let reaction = this.userReactions[stats.reaction];
         let speechBubble = this.drawSpeechBubble(reaction);
 
         // schedule event to remove speech bubble
@@ -396,11 +394,7 @@ class PlayState extends Phaser.State {
         console.log('[play] Show score', this.phraseScore);
         let scoreDialogGroup = this.game.add.group();
         let stats = this.getStats();
-        let flavorStr = "I hear Hooli is hiring..";
-
-        if (+stats.weissman_score === config.PERFECT_SCORE) {
-            flavorStr = "Congratulations! You blew away the theoretical limit!";
-        }
+        let flavorStr = this.flavorText[stats.reaction];
 
         // first draw a rectangle background
         let scoreDialogBg = this.game.add.sprite(0, 0, 'score-bg');
@@ -510,6 +504,7 @@ class PlayState extends Phaser.State {
         const compressedPct = score.totalCompressed / score.numChars;
         const uncompressedPct = score.totalUncompressed / score.numChars;
         const lostPct = score.totalLost / score.numChars;
+        let reaction;
 
         let weissman_score = config.WEISSMAN_THEORETICAL_LIMIT;
 
@@ -518,8 +513,26 @@ class PlayState extends Phaser.State {
             weissman_score = config.PERFECT_SCORE;
         }
         else {
-            weissman_score -= (weissman_score * uncompressedPct * 1.5) - (weissman_score * lostPct * 1.5);
+
+            weissman_score -= (weissman_score * uncompressedPct) + (weissman_score * lostPct);
             weissman_score = Math.max(0, weissman_score); // don't allow negative
+        }
+
+        // calculate reaction for speech bubble and flavor text
+        if (weissman_score <= 2) {
+            reaction = 'bad';
+        }
+        else if (weissman_score > 2 && weissman_score <= 2.5) {
+            reaction = 'ok';
+        }
+        else if (weissman_score > 2.5 && weissman_score <= 2.7) {
+            reaction = 'good';
+        }
+        else if (weissman_score > 2.7 && weissman_score < config.PERFECT_SCORE) {
+            reaction = 'great';
+        }
+        else if (weissman_score >= config.PERFECT_SCORE) {
+            reaction = 'perfect';
         }
 
         return {
@@ -530,6 +543,7 @@ class PlayState extends Phaser.State {
             compressedPct: Math.round(compressedPct * 100),
             uncompressedPct: Math.round(uncompressedPct * 100),
             lostPct: Math.round(lostPct * 100),
+            reaction: reaction,
         }
     }
 }
