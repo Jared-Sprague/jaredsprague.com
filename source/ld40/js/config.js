@@ -28,6 +28,6 @@ const config = Object.freeze({
 
     WEISSMAN_THEORETICAL_LIMIT: 2.9,
 
-    DIFFICULTY_SPEED_INCREMENT: 1.3,
+    DIFFICULTY_SPEED_INCREMENT: 1,
 
 });
