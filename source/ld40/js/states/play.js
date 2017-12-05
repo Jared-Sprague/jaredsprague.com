@@ -278,36 +278,44 @@ class PlayState extends Phaser.State {
         let endPosition   = this.sprites.server.position;
         let time          = config.FILE_REQUEST_TIME;
         let arcPeakY      = 10;
+        let initialScale  = 0.1;
         let fileGroup     = this.game.add.group();
         let fileSprite    = this.game.add.sprite(0, 0, 'file');
-
-        fileGroup.position.set(startPosition.x, startPosition.y);
-        fileGroup.add(fileSprite);
-
 
         // Draw file label
         let style = { font: "24px Monospace", fill: "#fff", align: "left"};
         let fileLabel = this.game.add.text(0, fileSprite.height + 2, `Request: ${this.stageFileLabels[this.currentStage]}`, style);
         fileLabel.x -= fileLabel.width / 4;
+
+        fileGroup.add(fileSprite);
         fileGroup.add(fileLabel);
+
+        fileGroup.position.set(startPosition.x, startPosition.y + 50);
+        fileGroup.scale.set(initialScale);
 
         this.sounds.fileRequest.play();
 
         // tween the object from left to right in a linear fashion
         this.game.add.tween(fileGroup.position)
-            .to({x: endPosition.x},
+            .to({x: endPosition.x + 20},
                 time,
                 Phaser.Easing.Linear.None,
                 true
             );
 
         // chain tween the object up to the Y value with a sinusoidal ease out, then back down with an ease in
-        let fileTween = this.game.add.tween(fileGroup.position)
+        let fileTweenY = this.game.add.tween(fileGroup.position)
             .to({y: arcPeakY}, time * 0.5, Phaser.Easing.Sinusoidal.Out)
-            .to({y: endPosition.y}, time * 0.5, Phaser.Easing.Sinusoidal.In)
-            .start();
+            .to({y: endPosition.y + 50}, time * 0.5, Phaser.Easing.Sinusoidal.In);
 
-        fileTween.onComplete.add(() => {
+        let fileTweenScale = this.game.add.tween(fileGroup.scale)
+            .to({x: 1, y: 1}, time * 0.5, Phaser.Easing.Sinusoidal.Out)
+            .to({x: initialScale, y: initialScale}, time * 0.5, Phaser.Easing.Sinusoidal.In);
+
+        fileTweenY.start();
+        fileTweenScale.start();
+
+        fileTweenY.onComplete.add(() => {
             this.beginPhrase(this.stageTypingText[this.currentStage]);
             fileGroup.destroy();
         }, this)
