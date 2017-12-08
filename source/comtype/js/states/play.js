@@ -24,22 +24,22 @@ class PlayState extends Phaser.State {
         this.stageTypingText = {
             1: "ahh a nice simple plain string",
             2: "who uses xml anymore honestly lets compress this into oblivion",
-            3: "oh crap a 3d video file the one thing i have trouble compressing oh man i hope this works",
+            3: "uh oh a 3d video file the one thing i have trouble compressing oh man i hope this works",
         };
 
         this.userReactions = {
-            bad: 'JING-YANG!',
-            ok: 'Eh. They must be running Nucleus.',
-            good: 'Not bad. I wonder if Dinesh wrote this..',
-            great: 'That was FAST! They must be using Middle Out.',
+            bad: "Must have a bad signal :(",
+            ok: 'Eh. Must have been a server glitch.',
+            good: 'Not bad. Nice compression rate.',
+            great: 'That was FAST! They must be using gzip.',
             perfect: "Fastest download EVER!",
         };
 
         this.flavorText = {
-            bad: 'Is your name Big Head?',
-            ok: 'I hear Hooli is hiring..',
-            good: 'Gavin Belson would buy it.',
-            great: "Peter Gregory would be proud.",
+            bad: 'You can do better!',
+            ok: 'Ok, but not great.',
+            good: 'You have a future in code.',
+            great: "Claude Shannon would be proud! (google it)",
             perfect: "Congratulations! You blew away the theoretical limit!",
         };
 

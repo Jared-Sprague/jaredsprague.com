@@ -6,7 +6,8 @@
     "version": "3.4.3"
   },
   "scripts": {
-    "deploy": "rm db.json; rm -rf .deploy_git; hexo deploy -g"
+    "deploy": "rm db.json; rm -rf .deploy_git; hexo deploy -g",
+    "clean": "rm db.json; rm -rf .deploy_git"
   },
   "dependencies": {
     "hexo": "^3.3.9",
