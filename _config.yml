@@ -29,6 +29,7 @@ skip_render:
 - "fish-game/**/*"
 - "examples/**/*"
 - "ld40/**/*"
+- "comtype/**/*"
 
 # Writing
 new_post_name: :title.md # File name of new posts
