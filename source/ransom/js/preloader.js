@@ -35,7 +35,7 @@ const Preloader = new Phaser.Class({
                         {type: 'image', key: 'tvscreen2', url: 'img/tvscreen2.png'},
                         {type: 'image', key: 'underworldlobby', url: 'img/underworldlobby.png'},
                         {type: 'image', key: 'nextbutton', url: 'img/nextbutton.png'},
-                        {type: 'image', key: 'controller', url: 'img/controller.png'},
+                        {type: 'image', key: 'controller', url: 'img/controllerupdated.png'},
                         {type: 'image', key: 'a_button', url: 'img/a_button.png'},
                         {type: 'image', key: 'b_button', url: 'img/b_button.png'},
                         {type: 'image', key: 'forcefield', url: 'img/forcefield.png'},
@@ -96,6 +96,7 @@ const Preloader = new Phaser.Class({
         this.load.atlas('boss', 'img/boss_sheet.png', 'img/boss_array.json');
         this.load.atlas('boy_fight', 'img/boy_fight_sheet.png', 'img/boy_fight_array.json');
         this.load.atlas('particles', 'img/particle_sheet.png', 'img/particle_array.json');
+        this.load.atlas('walking', 'img/walking_sheet.png', 'img/walking_array.json');
 
         // font
         this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');
@@ -123,18 +124,14 @@ const Preloader = new Phaser.Class({
 
         // also create animations
         this.anims.create({
-            key: 'cointurn',
+            key: 'walk',
             frames: [
-                {key: 'sprites', frame: 'coin1'},
-                {key: 'sprites', frame: 'coin2'},
-                {key: 'sprites', frame: 'coin3'},
-                {key: 'sprites', frame: 'coin4'},
-                {key: 'sprites', frame: 'coin5'},
-                {key: 'sprites', frame: 'coin6'},
-                {key: 'sprites', frame: 'coin7'},
-                {key: 'sprites', frame: 'coin8'}
+                {key: 'walking', frame: '000_1'},
+                {key: 'walking', frame: '000_2'},
+                {key: 'walking', frame: '000_3'},
+                {key: 'walking', frame: '000_4'},
             ],
-            frameRate: 15,
+            frameRate: 6,
             repeat: -1
         });
 
